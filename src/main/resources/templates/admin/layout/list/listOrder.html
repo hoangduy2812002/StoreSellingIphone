@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/indexLayoutAdmin.html}">
+<head>
+<meta charset="UTF-8">
+<title>List of Customers</title>
+</head>
+<body>
+	<section class="listCategory" layout:fragment="content">
+		<h1>
+			<a th:href="@{/admin/home}" class="btn bg-warning float-left"><i
+				class="bi bi-house-door"></i>&nbsp;Home</a>
+		</h1>
+		<h1 class="text-danger text-center">LIST OF ORDER</h1>
+		&nbsp;
+		<div th:if="@{message!=null}" class="alter alter-primary">
+			<span class="bg-success w-50">[[${message}]]</span>
+		</div>
+		<div class="tbl-header">
+			<table cellpadding="0" cellspacing="0" border="0">
+				<thead>
+					<tr>
+						<th class="text-success">STT</th>
+						<th class="text-success">Username</th>
+						<th class="text-success">Quantity</th>
+						<th class="text-success">Total</th>
+						<th class="text-success">Entered Date</th>
+						<th class="text-success">
+						
+						</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+		<div class="tbl-content-product">
+			<table cellpadding="0" cellspacing="0" border="0">
+				<tbody>
+					<tr th:each="item, iterStat : ${page.content}">
+						<td><span th:text="${iterStat.index+1+'.  '}"></span> <img
+							th:src="@{'/images/accounts/'+${item.account.image}}" alt=""
+							style="width: 50%; height: 50px" /></td>
+						<td>[[${item.account.username}]]</td>
+						<td th:text="${item.quantity}"></td>
+						<td
+							th:text="${#numbers.formatDecimal(item.total,0, 'COMMA', 0, 'POINT')}"></td>
+						<td th:text="${#dates.format(item.enteredDate, 'dd-MM-yyyy')}">4</td>
+						<td>
+							<div class="row">
+							 	<a th:href="@{'/admin/orderDetail/'+${item.orderId}}"
+									style="margin-left: -36%;" class="btn btn-outline-primary">Product details</a> 
+							</div>
+						</td>
+					</tr>
+
+				</tbody>
+			</table>
+
+		</div>
+		<div class="text-center">[[${page.number+1}]] /
+			[[${page.totalPages}]]</div>
+		<div class="row">
+			<nav aria-label="..." style="margin-left: 37%">
+				<ul class="pagination">
+					<li><a th:href="@{'/admin/accounts/listAccount?p=' +0}"
+						class="page-link">First</a></li>
+					<li><a th:href="@{'/admin/order?p=' +${page.number-1}}"
+						class="page-link">Previous</a></li>
+					<li><a th:href="@{'/admin/order?p='+ ${page.number+1}}"
+						class="page-link">Next</a></li>
+
+					<li><a th:href="@{'/admin/order?p='+${page.totalPages-1}}"
+						class="page-link">Last</a></li>
+				</ul>
+			</nav>
+		</div>
+	</section>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/indexLayoutAdmin.html}">
+<head>
+<meta charset="UTF-8">
+<title>List of Customers</title>
+</head>
+<body>
+	<section class="listCategory" layout:fragment="content">
+		<h1>
+			<a th:href="@{/admin/home}" class="btn bg-warning float-left"><i
+				class="bi bi-house-door"></i>&nbsp;Home</a>
+		</h1>
+		<h1 class="text-danger text-center">LIST OF ORDERDETAILS</h1>
+		&nbsp;
+		<div class="alter alter-primary">
+			<span class="bg-success w-50">[[${message}]]</span>
+		</div>
+		<div class="tbl-header">
+			<table cellpadding="0" cellspacing="0" border="0">
+				<thead>
+					<tr>
+						<th class="text-success">Username</th>
+
+						<th class="text-success">Image</th>
+						<th class="text-success">Name Product</th>
+						<th class="text-success">Unit Price</th>
+						<th class="text-success">Address</th>
+						<th></th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+		<div class="tbl-content-product">
+			<table cellpadding="0" cellspacing="0" border="0">
+				<tbody>
+					<tr th:each="item,iterStat : ${page}">
+						<td><span th:text="${iterStat.index+1+'.  '}"></span> <!-- <img
+							th:src="@{'/images/accounts/'+${item.image}}" alt=""
+							style="width: 50%; height: 50px" /> --> <span
+							th:text="${item.order.account.username}"></span></td>
+
+						<td><img
+							th:src="@{'/images/products/'+${item.product.image}}" alt=""
+							style="width: 50%; height: 50px" /></td>
+						<td th:text="${item.product.name}"></td>
+
+						<td
+							th:text="${#numbers.formatDecimal(item.product.unitPrice,0, 'COMMA', 0, 'POINT')}"></td>
+						<td th:text="${item.address}"></td>
+						<td>
+							<div class="row">
+
+
+								<a th:data-id="${item.orderDetailId}"
+									th:data-name="${item.product.name}"
+									onclick="showConfirm(this.getAttribute('data-id'), this.getAttribute('data-name'))"
+									class="btn btn-outline-danger">Remove</a>
+							</div>
+						</td>
+					</tr>
+
+				</tbody>
+			</table>
+
+
+			<script>
+		function showConfirm(id, name){
+			$('#productName').text(name);
+			$('#yesOption').attr('href','/admin/deleteOrderDetail/'+id);
+			$('#confirmationId').modal('show');
+			}
+		</script>
+			<div class="modal" id="confirmationId" tabindex="-1">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">Confirmation</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<p>
+								Do you want to delete " <span class="text-success"
+									id="productName"></span> "?
+							</p>
+						</div>
+						<div class="modal-footer">
+							<a id="yesOption" class="btn btn-danger">Yes</a>
+							<button type="button" class="btn btn-secondary"
+								data-dismiss="modal">No</button>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+		<div class="text-center">[[${page.number+1}]] /
+			[[${page.totalPages}]]</div>		<div class="row">
+			<nav aria-label="..." style="margin-left: 37%">
+				<ul class="pagination">
+					<li><a th:href="@{'/admin/accounts/listAccount?p=' +0}"
+						class="page-link">First</a></li>
+					<li><a th:href="@{'/admin/order?p=' +${page.number-1}}"
+						class="page-link">Previous</a></li>
+					<li><a th:href="@{'/admin/order?p='+ ${page.number+1}}"
+						class="page-link">Next</a></li>
+
+					<li><a th:href="@{'/admin/order?p='+${page.totalPages-1}}"
+						class="page-link">Last</a></li>
+				</ul>
+			</nav>
+		</div>
+
+	</section>
+</body>
+</html>

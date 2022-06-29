@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/indexLayoutAdmin.html}">
+<head>
+<meta charset="UTF-8">
+<title>Register an account</title>
+
+</head>
+<body>
+	<div layout:fragment="content" class="container register"
+		style="margin-top: -5%">
+		<div class="row">
+			<div class="col-md-3 register-left">
+				<img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
+				<h3 class="text-white">Welcome</h3>
+				<p>Shopping</p>
+				<a th:href="@{/sties/login}" class="btn btn-outline-info">Login</a><br />
+			</div>
+			<div class="col-md-9 register-right">
+
+				<div class="tab-content" id="myTabContent">
+					<div class="tab-pane fade show active" id="home" role="tabpanel"
+						aria-labelledby="home-tab">
+						<h3 class="register-heading"
+							th:text="${accounts.checkEdit?'Update an account' : 'Register an account'}">Register
+							an account</h3>
+
+						<div class="row register-form">
+							<div class="form-group" th:if="@{message!=null}">
+								<h4 class="form-group bg-warning text-white w-100">[[${message}]]</h4>
+							</div>
+							<form th:action="@{/admin/accounts/saveAccountUpdate}"
+								enctype="multipart/form-data" th:object="${accounts}"
+								method="post" class="row col-md-12" style="margin-top: -5%;">
+								<div class="col-md-6">
+									<div class="form-group">
+										<input type="hidden" class="form-control"
+											placeholder="UserId *" th:field="*{userId}" />
+									</div>
+									<div class="form-group" style="margin-top: -7%;">
+										<input type="text" class="form-control"
+											placeholder="Username *" th:field="*{username}" required
+											th:if="${accounts.checkEdit}==false" /> <small
+											th:if="${#fields.hasErrors('username')}"
+											class="bg-danger text-white">Username > 5 characters.</small>
+									</div>
+
+									<div class="form-group">
+										<input type="password" class="form-control"
+											th:if="${accounts.checkEdit}==false" placeholder="Password *"
+											th:field="*{password}" required /> <small
+											th:if="${#fields.hasErrors('password')}"
+											class="bg-danger text-white">Password > 5 characters.</small>
+									</div>
+									<div class="form-group">
+										<input type="password" class="form-control"
+											th:if="${accounts.checkEdit}==false"
+											placeholder="Confirm Password *"
+											th:field="*{confirmPassword}" required /> <small
+											th:if="@{message!=null}" class="bg-danger text-white">[[${messagePassword}]]
+										</small>
+									</div>
+									<!-- 	t -->
+
+
+									<div class="form-group" style="margin-top: -7%;">
+										<input type="text" class="form-control" placeholder=""
+											th:field="*{username}" disabled
+											th:if="${accounts.checkEdit}!=false" />
+
+									</div>
+									<div class="form-group">
+										<input type="password" class="form-control"
+											th:if="${accounts.checkEdit}!=false"
+											placeholder="***************" disabled />
+
+									</div>
+									<div class="form-group">
+										<input type="password" class="form-control"
+											th:if="${accounts.checkEdit}!=false"
+											placeholder="***************" disabled />
+									</div>
+
+									<!-- 	t -->
+									<br />
+									<div class="form-group">
+										<input type="text" class="form-control"
+											placeholder="Fullname *" th:field="*{fullname}" required />
+										<small th:if="${#fields.hasErrors('fullname')}"
+											class="bg-danger text-white">Fullname > 5 characters.</small>
+									</div>
+									<div class="form-group">
+										<div class="maxl">
+											<label class="radio inline"> <input type="radio" th:field="*{gender}"
+												name="gender" value="true" checked> <span
+												class="text-dark"> Male </span>
+											</label> <label class="radio inline"> <input type="radio" th:field="*{gender}"
+												name="gender" value="false"> <span class="text-dark">Female
+											</span>
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<input type="email" class="form-control"
+											placeholder="Your Email *" th:field="*{email}" required /> <small
+											th:if="${#fields.hasErrors('email')}"
+											class="bg-danger text-white">Email > 8 characters.</small>
+									</div>
+									<div class="form-group">
+										<input type="text" name="txtEmpPhone" class="form-control"
+											placeholder="Your Phone *" th:field="*{phone}" required /> <small
+											th:if="${#fields.hasErrors('phone')}"
+											class="bg-danger text-white">Phone > 10 characters.</small>
+									</div>
+
+									<script>
+										function chooseFile(fileInput) {
+											if (fileInput.files && fileInput.files[0]) {
+												var reader = new FileReader();
+
+												reader.onload = function (e) {
+													$('#image').attr('src', e.target.result);
+												}
+
+												reader.readAsDataURL(fileInput.files[0]);
+											}
+										}
+									</script>
+
+									<div class="form-group">
+										<span class="text-dark">Image</span> <img id="image"
+											th:src="@{'/images/accounts/'+${accounts.image}}" width="30%"
+											height="60px">
+									</div>
+									<div class="form-group">
+										<input type="file" onchange="chooseFile(this)"
+											name="imageFile" class="form-control" value="" />
+									</div>
+									<div class="row" style="margin-left: 5%">
+										<button style="margin-left: -25%"
+											th:text="${accounts.checkEdit?'Update Account' : 'Register Account'}"
+											class="btn btn-primary">Register Account</button>
+										<a style="margin-left: 25%" th:href="@{/admin/account}"
+											class="btn btn-info text-white">Reset</a>
+									</div>
+									<br /> <a th:href="@{/admin/accounts/listAccount}"
+										class="btn btn-success w-100 mt-3" style="margin-left: -45%">Account
+										List</a>
+
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</body>
+</html>
+

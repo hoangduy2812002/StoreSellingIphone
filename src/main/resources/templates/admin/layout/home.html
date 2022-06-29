@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/indexLayoutAdmin.html}">
+<head>
+<body>
+	<div layout:fragment="content">
+		<div class="shadow-sm p-3 mb-5 bg-white rounded text-primary">
+			Users <b class="text-danger">[[${accounts}]]</b>
+		</div>
+		<div class="shadow p-3 mb-5 bg-white rounded text-primary">
+			Categories <b class="text-danger">[[${categories}]]</b>
+		</div>
+		<div class="shadow p-3 mb-5 bg-white rounded text-primary">
+			Products <b class="text-danger">[[${products}]]</b>
+		</div>
+		<div class="shadow-lg p-3 mb-5 bg-white rounded text-primary">
+			Orders <b class="text-danger">[[${orders}]]</b>
+		</div>
+	</div>
+</body>
+</html>

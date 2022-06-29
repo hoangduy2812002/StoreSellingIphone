@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/indexLayoutAdmin.html}">
+<head>
+<meta charset="UTF-8">
+<title>List Product</title>
+</head>
+<body>
+
+	<section class="listCategory" layout:fragment="content"
+		style="margin-top: -5%;">
+		<!--for demo wrap-->
+		<h1>
+			<a th:href="@{/admin/home}" class="btn bg-warning float-left"><i
+				class="bi bi-house-door"></i>&nbsp;Home</a>
+		</h1>
+		<h1 class="text-danger text-center">LIST OF PRODUCTS</h1>
+		&nbsp;
+		<div th:if="@{message!=null}" class="alter alter-primary">
+			<span class="bg-success w-50">[[${message}]]</span>
+		</div>
+		<div class="tbl-header">
+			<table th:object="${category}" cellpadding="0" cellspacing="0"
+				border="0">
+				<thead>
+					<tr>
+						<!--  <th class="text-success">STT</th> -->
+						<th class="text-success">Image</th>
+						<th class="text-success">Product Name <a
+							th:if="${product.checkEdit}" class="btn btn-outline-danger"
+							th:href="@{/admin/products/sort/giam?field=name}"><i
+								class="bi bi-arrow-bar-down " style="font-size: 25px;"></i></a> <a
+							th:unless="${product.checkEdit}" class="btn btn-outline-warning"
+							th:href="@{/admin/products/sort/tang?field=name}"><i
+								class="bi bi-arrow-bar-up" style="font-size: 25px;"></i></a></th>
+						<th class="text-success">Quantity <a
+							th:if="${product.checkEdit}" class="btn btn-outline-danger"
+							th:href="@{/admin/products/sort/giam?field=quantity}"><i
+								class="bi bi-arrow-bar-down " style="font-size: 25px;"></i></a> <a
+							class="btn btn-outline-warning" th:unless="${product.checkEdit}"
+							th:href="@{/admin/products/sort/tang?field=unitPrice}"><i
+								class="bi bi-arrow-bar-up" style="font-size: 25px;"></i></a>
+						</th>
+						<th class="text-success">Unit Price <a
+							th:if="${product.checkEdit}" class="btn btn-outline-danger"
+							th:href="@{/admin/products/sort/giam?field=quantity}"><i
+								class="bi bi-arrow-bar-down " style="font-size: 25px;"></i></a> <a
+							class="btn btn-outline-warning" th:unless="${product.checkEdit}"
+							th:href="@{/admin/products/sort/tang?field=unitPrice}"><i
+								class="bi bi-arrow-bar-up" style="font-size: 25px;"></i></a>
+						</th>
+						<th class="text-success">Entered Date <a
+							th:if="${product.checkEdit}" class="btn btn-outline-danger"
+							th:href="@{/admin/products/sort/giam?field=enteredDate}"><i
+								class="bi bi-arrow-bar-down " style="font-size: 25px;"></i></a> <a
+							class="btn btn-outline-warning" th:unless="${product.checkEdit}"
+							th:href="@{/admin/products/sort/tang?field=enteredDate}"><i
+								class="bi bi-arrow-bar-up" style="font-size: 25px;"></i></a>
+						</th>
+						<th class="">
+							<div class="">
+								<form th:action="@{/admin/products/listProduct}"
+									style="margin-top: -2%;">
+									<div class="form-inline float-left">
+										<input type="text" class="form-control w-50" name="name"
+											placeholder="Name?">&ensp;
+										<button class="btn btn-outline-info">
+											<i class="bi bi-search"></i>
+										</button>
+									</div>
+								</form>
+							</div>
+						</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+		<div class="tbl-content-product">
+			<table cellpadding="0" cellspacing="0" border="0">
+				<tbody>
+					<tr th:each="item, iterStat : ${pages}">
+						<td><span th:text="${iterStat.index+1}"></span> &ensp;<img
+							th:src="@{'/images/products/'+${item.image}}" alt=""
+							style="width: 50%; height: 50px" /></td>
+						<td th:text="${item.name}"></td>
+						<td th:text="${item.quantity}"></td>
+						<td
+							th:text="${#numbers.formatDecimal(item.unitPrice,0, 'COMMA', 0, 'POINT')}"></td>
+						<td th:text="${#dates.format(item.enteredDate, 'dd-MM-yyyy')}"></td>
+						<td><a
+							th:href="@{'/admin/products/edit/' + ${item.productId}}"
+							class="btn btn-outline-primary">Edit</a> <a
+							th:data-id="${item.productId}" th:data-name="${item.name}"
+							onclick="showConfirm(this.getAttribute('data-id'), this.getAttribute('data-name'))"
+							class="btn btn-outline-danger">Remove</a></td>
+					</tr>
+
+				</tbody>
+			</table>
+
+
+			<script>
+		function showConfirm(id, name){
+			$('#productName').text(name);
+			$('#yesOption').attr('href','/admin/products/delete/'+id);
+			$('#confirmationId').modal('show');
+			}
+		</script>
+			<div class="modal" id="confirmationId" tabindex="-1">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">Confirmation</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<p>
+								Do you want to delete " <span class="text-success"
+									id="productName"></span> "?
+							</p>
+						</div>
+						<div class="modal-footer">
+							<a id="yesOption" class="btn btn-danger">Yes</a>
+							<button type="button" class="btn btn-secondary"
+								data-dismiss="modal">No</button>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<a th:href="@{/admin/products/listProduct}"
+			class="btn btn-success float-right mt-3">Each list</a>
+	</section>
+</body>
+</html>

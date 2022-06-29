@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{sties/indexLayoutSties.html}">
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+
+</head>
+<body>
+	<div layout:fragment="content" style="margin-top: -5%">
+		<div class="formlogin" style="margin-top: 4%">
+
+			<div class="containerlogin" id="container">
+				<div class="form-container sign-up-container"></div>
+				<div class="form-container sign-in-container">
+					<form action="/sties/checklogin" class="loginacction" method="post" th:object="${accounts}">
+						<h1>Sign in</h1>
+						<div class="form-group" th:if="@{message!=null}">
+							<h4 class="form-group bg-warning text-white w-100">[[${message}]]</h4>
+						</div>
+						<input type="text" placeholder="Username?" name="username"
+							class="textinput" required/> <small
+							th:if="${#fields.hasErrors('username')}"
+							class="bg-danger text-white">Username > 5 characters.</small> <input
+							type="password" placeholder="Password?" name="password"
+							class="textinput" required />
+							<small th:if="${#fields.hasErrors('password')}"
+											class="bg-danger text-white">Password > 5 characters.</small>
+							<a th:href="@{/sties/forgotUsername}">Forgot your password?</a>
+						<button class="buttonloginn class mt-2">Sign In</button>
+					</form>
+				</div>
+				<div class="overlay-container">
+					<div class="overlay">
+						<div class="overlay-panel overlay-left">
+							<h1>Welcome Back!</h1>
+							<p>To keep connected with us please login with your personal
+								info</p>
+							<button class="ghost" id="signIn">Sign In</button>
+						</div>
+						<div class="overlay-panel overlay-right">
+							<h1 class="font-weight-bolder text-white">Hello, Friend!</h1>
+							<p>
+								Enter your personal details and start <br />journey with us
+							</p>
+							<button class="ghost buttonloginn" style="height: 40px;"
+								id="signUp">
+								<a style="margin-top: -10%;" th:href="@{/sties/register}"
+									class="btn font-weight-bolder text-white">Sign Up</a>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{sties/indexLayoutSties.html}">
+<head>
+<body>
+	<div layout:fragment="content">
+		<img src="/img/banner/banner.jpeg" width="100%" height="400px" alt=""><br />
+		<br />
+		<section class="inspired_product_area section_gap_bottom_custom">
+			<div class="container">
+
+				<div class="row justify-content-center">
+					<div class="col-lg-12">
+						<div class="text-center">
+							<h2>
+								<span>Sản phẩm nổi bật </span>
+							</h2>
+							<p>Apple là thương hiệu giá trị nhất thế giới năm 2022</p>
+						</div>
+					</div>
+				<div class="row">
+				
+				<form th:action="@{/sties/searchPrice}" style="margin-left:-170% ">
+						<script
+							src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+						<div class="rangeslider">
+							<input class="min" name="range_1" type="range" min="0"
+								max="100000000" /> <input class="max" name="range_2" type="range"
+								min="0" max="100000000" /> <span class="range_min light left">
+							</span> <span class="range_max light right"></span><br />
+							<br />
+							<br />
+							<button class="btn btn-outline-warning" style="margin-left: -4%;margin-top: -11%;" >Search</button>
+						</div>
+					</form>
+					
+					<form th:action="@{/sties/searchId}" style="margin-left:170% " th:object="${product}">
+						<div class="form-inline">
+							<h3 class="mt-2 text-info">Category</h3>
+							&ensp; <select th:field="*{categoryId}" name="categoryId"
+								onchange='if(this.value != null) { this.form.submit(); }'
+								class="">
+								<option th:each="item: ${categories}"
+									th:value="${item.categoryId}" th:text="${item.name}"
+									th:selected="${item.categoryId == product.categoryId}">b</option>
+							</select>
+						</div>
+					</form>
+
+					
+					</div>
+					<form style="margin-left: 70%;" th:action="@{/sties/home}">
+						<div class="form-inline">
+							<input type="text" class="form-control" name="name"
+								placeholder="Product name?">&ensp;
+							<button class="btn btn-outline-info" >Search</button>
+						</div>
+					</form>
+
+				</div>
+
+				<div class="row mt-3">
+					<div th:each="item, iStart : ${page.content}"
+						class="col-lg-4 col-md-6">
+						<div class="single-product">
+							<div class="product-img">
+								<img class="" th:src="@{'/images/products/'+${item.image}}"
+									style="width: 90%; height: 300px" />
+								<div class="p_icon">
+									<a href="#"> <i class="ti-eye"></i>
+									</a> <a href="#"> <i class="ti-heart"></i>
+									</a> <a th:href="@{'/sties/add/'+${item.productId}}"> <i class="ti-shopping-cart"></i>
+									</a>
+								</div>
+							</div>
+							<div class="product-btm">
+								<a href="#" class="d-block">
+									<div class="row">
+										<span>Name: &ensp;</span>
+										<h4 th:text="${item.name}" class="text-success">IPhone 11</h4>
+									</div>
+								</a> </span>
+								<div class="mt-3">
+									<div class="row">
+										<span>Unit Price: &ensp;</span> <span
+											class="mr-4  text-danger"
+											th:text="${#numbers.formatDecimal(item.unitPrice,0, 'COMMA', 0, 'POINT')}">7.989.000
+											₫</span><span style="font-size: 10px;">VNĐ</span>
+									</div>
+								</div>
+								<div class="mt-3">
+									<div class="row">
+										<span>Category: &ensp;</span> <span class="mr-4  text-primary">[[${item.category.name}]]</span>
+									</div>
+								</div>
+								<div class="row mt-2 float-right">
+									<span style="font-size: 13px;">Quantity: &ensp;</span> <span
+										th:text="${item.quantity}">8</span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+				<div class="text-center">[[${page.number+1}]] /
+					[[${page.totalPages}]]</div>
+				<nav aria-label="..." style="margin-left: 37%">
+					<ul class="pagination">
+						<li><a th:href="@{'/sties/home?p=' +0}" class="page-link">First</a></li>
+						<li><a th:href="@{'/sties/home?p=' +${page.number-1}}"
+							class="page-link">Previous</a></li>
+						<li><a th:href="@{'/sties/home?p='+ ${page.number+1}}"
+							class="page-link">Next</a></li>
+
+						<li><a th:href="@{'/sties/home?p='+${page.totalPages-1}}"
+							class="page-link">Last</a></li>
+					</ul>
+				</nav>
+			</div>
+		</section>
+	</div>
+</body>
+</html>

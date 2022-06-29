@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/indexLayoutAdmin.html}">
+<head>
+<meta charset="UTF-8">
+<title>List of Customers</title>
+</head>
+<body>
+	<section class="listCategory" layout:fragment="content">
+		<h1>
+			<a th:href="@{/admin/home}" class="btn bg-warning float-left"><i
+				class="bi bi-house-door"></i>&nbsp;Home</a>
+		</h1>
+		<h1 class="text-danger text-center">LIST OF ACCOUNT</h1>
+		&nbsp;
+		<div th:if="@{message!=null}" class="alter alter-primary">
+			<span class="bg-success w-50">[[${message}]]</span>
+		</div>
+		<div class="tbl-header">
+			<table cellpadding="0" cellspacing="0" border="0">
+				<thead>
+					<tr>
+						<th class="text-success">Image</th>
+						<th class="text-success">Username</th>
+						<th class="text-success">Fullname</th>
+						<th class="text-success">Gender</th>
+						<th class="text-success">Email</th>
+							<th></th>
+						<th class="text-success">Role</th>
+					<!-- 	<th class="text-success">Phone number</th> -->
+						<th class="text-success">Activated</th>
+						<th></th>
+						<th class="text-success">
+							<div class="">
+								<form th:action="@{/admin/accounts/listAccount}"
+									style="margin-top: -2%;">
+									<div class="row">
+										<input style="margin-left: -50%;" type="text" class="form-control w-100"  name="username"
+											placeholder="Username?">&ensp;
+										<button class="btn btn-outline-info">
+											<i class="bi bi-search"></i>
+										</button>
+									</div>
+								</form>
+							</div>
+						</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+		<div class="tbl-content-product">
+			<table cellpadding="0" cellspacing="0" border="0">
+				<tbody>
+					<tr th:each="item, iterStat : ${page.content}">
+						<td><span th:text="${iterStat.index+1+'.  '}"></span> <img
+							th:src="@{'/images/accounts/'+${item.image}}" alt=""
+							style="width: 50%; height: 50px" /></td>
+						<td th:text="${item.username}">Đặng Hoàng Duy</td>
+						<td th:text="${item.fullname}"></td>
+						<td th:text="${item.gender?'Male':'Female'}"></td>
+						<td th:text="${item.email}"></td>
+						  <td></td> 
+						<td th:text="${item.admin?'Admin':'Customer'}"></td>
+			
+						<td th:text="${item.activated?'Active':'Inactive'}"></td>
+						<td></td>
+						<td>
+						<div class="row" >
+							<a th:href="@{'/admin/accounts/edit/'+${item.userId}}" style="margin-left: -36%;" class="btn btn-outline-primary">Edit</a>
+							&ensp;
+							<a
+							th:data-id="${item.userId}" th:data-name="${item.username}"
+							onclick="showConfirm(this.getAttribute('data-id'), this.getAttribute('data-name'))"
+							class="btn btn-outline-danger">Remove</a>
+						</div>
+						</td>
+					</tr>
+		
+				</tbody>
+			</table>
+			
+			
+						<script>
+		function showConfirm(id, name){
+			$('#productName').text(name);
+			$('#yesOption').attr('href','/admin/accounts/delete/'+id);
+			$('#confirmationId').modal('show');
+			}
+		</script>
+			<div class="modal" id="confirmationId" tabindex="-1">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">Confirmation</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<p>
+								Do you want to delete " <span class="text-success"
+									id="productName"></span> "?
+							</p>
+						</div>
+						<div class="modal-footer">
+							<a id="yesOption" class="btn btn-danger">Yes</a>
+							<button type="button" class="btn btn-secondary"
+								data-dismiss="modal">No</button>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			
+		</div>
+		<div class="text-center">[[${page.number+1}]] /
+				[[${page.totalPages}]]</div>
+		<div class="row">
+			<nav aria-label="..." style="margin-left: 37%">
+				<ul class="pagination">
+					<li><a th:href="@{'/admin/accounts/listAccount?p=' +0}"
+						class="page-link">First</a></li>
+					<li><a
+						th:href="@{'/admin/accounts/listAccount?p=' +${page.number-1}}"
+						class="page-link">Previous</a></li>
+					<li><a
+						th:href="@{'/admin/accounts/listAccount?p='+ ${page.number+1}}"
+						class="page-link">Next</a></li>
+
+					<li><a
+						th:href="@{'/admin/accounts/listAccount?p='+${page.totalPages-1}}"
+						class="page-link">Last</a></li>
+				</ul>
+			</nav>
+		</div>
+	</section>
+</body>
+</html>

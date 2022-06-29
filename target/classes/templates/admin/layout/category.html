@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/indexLayoutAdmin.html}">
+<head>
+<meta charset="UTF-8">
+<title>Category Management</title>
+</head>
+<body>
+	<div layout:fragment="content"
+		class="container shadow p-3 mb-5 bg-white rounded w-50 mt-5">
+		<form th:action="@{/admin/categories/saveUpdateCategories}"
+			th:object="${category}" method="post">
+			<div class="form-group ">
+				<h1 class="text-danger text-center">Category Management</h1>
+				 &nbsp;   
+				<div th:if="@{message!=null}" >
+					<h4 class="bg-warning w-50">[[${message}]]</h4>
+				</div>
+<!-- 				<label for="exampleInputEmail1">Category Id: </label> -->
+				 <input type="hidden"
+					class="form-control w-25" id="exampleInputEmail1" th:field="*{categoryId}"
+					placeholder="ID" readonly>
+				&nbsp;
+				<label for="exampleInputEmail1">Name: </label> <input type="text"
+					class="form-control" id="exampleInputEmail1" th:field="*{name}"
+					placeholder="Category Name ?" aria-describedby="emailHelp" required>
+				&nbsp; <small th:if="${#fields.hasErrors('name')}"
+					class="bg-danger text-white">Category name > 5 characters.</small>
+			</div>
+			<button class="btn btn-primary btn-block btn-large">
+				<span th:if="${category.checkEdit}">Update</span> <span
+					th:unless="${category.checkEdit}" >Save</span>
+			</button>
+			<br> <a th:href="@{/admin/categories/listCategories}"
+				class="btn btn-info btn-block btn-large">Category list</a>
+		</form>
+	</div>
+</body>
+</html>

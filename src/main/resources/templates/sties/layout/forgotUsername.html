@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{sties/indexLayoutSties.html}">
+<head>
+<meta charset="UTF-8">
+<title>Forgot Password</title>
+</head>
+<body>
+	<div layout:fragment="content" style="margin-top: -5%"
+		class="container mt-5">
+		<form th:action="@{/sties/forgotUsername}" method="post"
+			th:object="${accounts}"
+			class="w-50 m-auto shadow p-3 mb-5 bg-white rounded">
+			<h2 class="text-success text-center">Forgot password2</h2>
+			<div class="form-group">
+				<input type="text" class="form-control" th:field="*{username}"
+					placeholder="Username?" required> <small
+					th:if="${#fields.hasErrors('username')}"
+					class="bg-danger text-white">Username > 5 characters.</small> <small
+					id="emailHelp" class="form-text text-muted bg-danger text-white">[[${message}]]</small>
+			</div>
+
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
+	</div>
+</body>
+</html>
